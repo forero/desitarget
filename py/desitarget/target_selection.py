@@ -19,7 +19,7 @@ target_types = ['ELG', 'LRG', 'QSO', 'STDSTAR', 'GAL', 'OTHER']
 target_priority = {'ELG': 4, 'LRG': 3, 'QSO': 1}
 target_nobs = {'ELG':1, 'LRG':2, 'QSO': 2}
 
-def targetsintile(ra=330, dec=0.0, radius=0.0):
+def targetsintile(ra=330, dec=0.0, radius=1.6):
     """
     Selects the targets in a circular tile by making a DB query.
     Uses the selection cuts defined in imaginglss.analysis.
@@ -51,15 +51,16 @@ def targetsintile(ra=330, dec=0.0, radius=0.0):
     
     m=cur.fetchall()
     data = np.array(m)
-
+    
     data_dic = dict([('ID', data[:,0]), ('RA', data[:,1]), ('DEC', data[:,2]), 
                      ('GFLUX', data[:,3]), ('RFLUX', data[:,4]), ('ZFLUX', data[:,5]), 
                      ('W1FLUX', data[:,6]), ('W2FLUX', data[:,7]),
                      ('GFRAC', data[:,8]), ('RFRAC',data[:,9]), ('ZFRAC', data[:,10]), 
                      ('W1FRAC', data[:,11]),  ('W2FRAC', data[:,12])])
-
-    not_zero = np.where((data_dic['GFLUX']!=0) & (data_dic['RFLUX']!=0) & (data_dic['ZFLUX']!=0) 
-                    & (data_dic['W1FLUX']!=0) & (data_dic['W2FLUX']!=0))
+    
+    not_zero = np.where((data_dic['GFLUX']!=0) &
+                        (data_dic['RFLUX']!=0) & (data_dic['ZFLUX']!=0) &
+                        (data_dic['W1FLUX']!=0) & (data_dic['W2FLUX']!=0))
 
     not_zero = not_zero[0]
 
